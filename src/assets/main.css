@@ -1,2 +1,5 @@
-
+body {
+  font-family: 'Prompt', sans-serif;
+}
 @import "tailwindcss";
+
