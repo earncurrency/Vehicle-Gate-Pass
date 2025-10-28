@@ -9,7 +9,8 @@
                 <h2 class="text-lg font-bold text-gray-700">รถที่ได้รับอนุญาต</h2>
             </div>
 
-            <draggable v-model="authorizedCars" item-key="id" :group="{ name: 'authorized', pull: true, put: false }"
+            <draggable v-model="authorizedCars" item-key="id"
+                :group="{ name: 'authorizedCars', pull: true, put: false }"
                 class="min-h-[4rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
                 :animation="200" :delay="200" :delay-on-touch-only="true" @add="handleAdd($event, 'authorizedCars')">
                 <!-- Items -->
@@ -33,7 +34,8 @@
             </div>
 
             <!-- Drag & Drop area -->
-            <draggable v-model="outgoingCars" item-key="id" :group="{ name: 'outgoing', pull: true, put: ['authorizedCars'] }"
+            <draggable v-model="outgoingCars" item-key="id"
+                :group="{ name: 'outgoingCars', pull: true, put: ['authorizedCars'] }"
                 class="min-h-[4rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
                 :animation="200" :delay="200" :delay-on-touch-only="true" @add="handleAdd($event, 'outgoingCars')">
                 <!-- Items -->
@@ -56,7 +58,8 @@
 
             </div>
 
-            <draggable v-model="incomingCars" item-key="id" :group="{ name: 'incoming', pull: false, put: ['outgoingCars'] }"
+            <draggable v-model="incomingCars" item-key="id"
+                :group="{ name: 'incomingCars', pull: false, put: ['outgoingCars'] }"
                 class="min-h-[4rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
                 :animation="200" :delay="200" :delay-on-touch-only="true" @add="handleAdd($event, 'incomingCars')">
                 <!-- Items -->
@@ -140,12 +143,14 @@ export default {
     },
     mounted() {
         this.getlistCar()
+        this.updateCar();
         this.checkOrientation()
         window.addEventListener('resize', this.checkOrientation)
         window.addEventListener('orientationchange', this.checkOrientation)
 
         this.timeout = setInterval(() => {
             this.getlistCar();
+            this.updateCar();
         }, (1000 * 60 * 3));
     },
     beforeUnmount() {
@@ -226,8 +231,10 @@ export default {
 
                 if (this.targetList === "incomingCars") {
                     payload.mileInNumber = this.form.remark;
+                    payload.dateTimeIn = this.getNow();
                 } else if (this.targetList === "outgoingCars") {
                     payload.mileOutNumber = this.form.remark;
+                    payload.dateTimeOut = this.getNow();
                 }
 
                 console.log("payload :", payload)
@@ -298,15 +305,16 @@ export default {
             }
         },
         cancelMove() {
-            // ยกเลิก: ย้ายกลับไป authorizedCars
-            if (this.tempCar && this.targetList) {
-                const list = this[this.targetList]
-                const index = list.findIndex(c => c.id === this.tempCar.id)
-                if (index !== -1) {
-                    list.splice(index, 1)
-                    this.authorizedCars.push(this.tempCar)
-                }
-            }
+            // ยกเลิก: ย้ายกลับไป 
+            // if (this.tempCar && this.targetList) {
+            //     const list = this[this.targetList]
+            //     const index = list.findIndex(c => c.id === this.tempCar.id)
+            //     if (index !== -1) {
+            //         list.splice(index, 1)
+            //         this.authorizedCars.push(this.tempCar)
+            //     }
+            // }
+            this.getlistCar()
             this.showModal = false
             this.tempCar = null
             this.targetList = ''
@@ -319,6 +327,70 @@ export default {
             this.targetList = ''
             this.form.remark = ''
         },
+
+        async updateCar() {
+            console.log("updateCar")
+            try {
+
+                // id, licencePlate, mile ,dateTime, updated(,true,false)
+                const storedOut = JSON.parse(localStorage.getItem("vehicleGatePassOut")) || [];
+                const storedIn = JSON.parse(localStorage.getItem("vehicleGatePassIn")) || [];
+
+                // ส่ง outgoingCars 
+                for (const car of storedOut) {
+                    const payloadOut = {
+                        action: "saveDoc",
+                        docID: car.id,
+                        licensePlate: car.licensePlate,
+                        mileOutNumber: car.mileOutNumber || null,
+                        dateTimeOut: this.getNow(),
+
+                    };
+                    console.log("payloadOut :", payloadOut)
+                    const responseOut = await axios.post(this.apiUrl + 'hr/vehicleGatePass', payloadOut);
+                    if (responseOut.data.success !== true) {
+                        console.error("เกิดข้อผิดพลาดกับ outgoingCar:", car, responseOut);
+                    }
+                    // else{
+                    //     localStorage.getItem("vehicleGatePassOut")[0]['updated'] = true;
+                    // }
+                }
+
+                // ส่ง incomingCars 
+                for (const car of storedIn) {
+                    const payloadIn = {
+                        action: "saveDoc",
+                        docID: car.id,
+                        licensePlate: car.licensePlate,
+                        mileInNumber: car.mileInNumber || null,
+                        dateTimeIn: this.getNow(),
+                    };
+                    console.log("payloadIn :", payloadIn)
+                    const responseIn = await axios.post(this.apiUrl + 'hr/vehicleGatePass', payloadIn);
+                    if (responseIn.data.success !== true) {
+                        console.error("เกิดข้อผิดพลาดกับ incomingCar:", car, responseIn);
+                    }
+                }
+
+                console.log("อัปเดทข้อมูลสำเร็จทั้งหมด");
+
+            } catch (error) {
+                console.error("เกิดข้อผิดพลาดในการบันทึก:", error);
+            }
+        },
+        getNow() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        },
+
+
+
     }
 }
 </script>
