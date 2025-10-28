@@ -23,7 +23,13 @@ export default defineConfig({
     __API_URL__: JSON.stringify(
       process.env.NODE_ENV === 'production'
         ? 'https://app.asiagroup1999.co.th/app/'
-        : 'https://app.asiagroup1999.co.th/app/'
+        : 'http://192.168.1.8/asiagroup_app/'
+    ),
+
+    __IMG_ICON__: JSON.stringify(
+      process.env.NODE_ENV === 'production'
+        ? '/Vehicle-Gate-Pass/'
+        : '/'
     ),
 
   }

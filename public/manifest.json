@@ -1,0 +1,21 @@
+{
+    "name": "Vehicle Gate Pass",
+    "short_name": "Vehicle Gate Pass",
+    "description": "Asia App Vehicle Gate Pass",
+    "start_url": "/vehicleGatePass/",
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "display": "standalone",
+    "orientation": "landscape",
+    "lang": "en",
+    "scope": "/vehicleGatePass/",
+    "icons": [
+        {
+            "src": "assetsRequest.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+
+    ]
+}
+
