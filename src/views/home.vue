@@ -4,21 +4,24 @@
 
         <!-- คอลัมน์ 1: รถที่ได้รับอนุญาต -->
         <div
-            class="min-w-72 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-hide">
+            class="min-w-82 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-hide">
             <div class="flex justify-between items-center sticky top-0 bg-gray-100 z-10 px-4 pt-6 pb-2">
-                <h2 class="text-lg font-bold text-gray-700">รถที่ได้รับอนุญาต</h2>
+                <h2 class="text-2xl font-bold text-gray-700">รถที่ได้รับอนุญาต</h2>
             </div>
 
             <draggable v-model="authorizedCars" item-key="id"
                 :group="{ name: 'authorizedCars', pull: true, put: false }"
-                class="min-h-[4rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
+                class="min-h-[5rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
                 :animation="200" :delay="200" :delay-on-touch-only="true" @add="handleAdd($event, 'authorizedCars')">
                 <!-- Items -->
                 <template #item="{ element: car }">
                     <div
-                        class="text-lg flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
-                        <i class="fa-solid fa-grip-vertical"></i>
-                        <p class="font-medium text-gray-700">{{ car.licensePlate }}</p>
+                        class="text-2xl flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
+                        <i class="fa-solid fa-grip-vertical text-gray-500"></i>
+                        <div class="">
+                            <p class="font-medium text-gray-700">{{ car.licensePlate }}</p>
+                            <!-- <p class="font-medium text-lg text-gray-500">{{ car.dateTimeOut }}</p> -->
+                        </div>
                     </div>
                 </template>
             </draggable>
@@ -27,23 +30,26 @@
 
         <!-- คอลัมน์ 2: ออกจากโรงงาน -->
         <div
-            class="min-w-72 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-hide">
+            class="min-w-82 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-hide">
             <!-- Header -->
             <div class="flex justify-between items-center sticky top-0 bg-gray-100 z-10 px-4 pt-6 pb-2">
-                <h2 class="text-lg font-bold text-gray-700">ออกจากโรงงาน</h2>
+                <h2 class="text-2xl font-bold text-gray-700">ออกจากโรงงาน</h2>
             </div>
 
             <!-- Drag & Drop area -->
             <draggable v-model="outgoingCars" item-key="id"
                 :group="{ name: 'outgoingCars', pull: true, put: ['authorizedCars'] }"
-                class="min-h-[4rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
+                class="min-h-[5rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
                 :animation="200" :delay="200" :delay-on-touch-only="true" @add="handleAdd($event, 'outgoingCars')">
                 <!-- Items -->
                 <template #item="{ element: car }">
                     <div
-                        class="text-lg flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
-                        <i class="fa-solid fa-grip-vertical"></i>
-                        <p class="font-medium text-gray-700">{{ car.licensePlate }}</p>
+                        class="text-2xl flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
+                        <i class="fa-solid fa-grip-vertical text-gray-500"></i>
+                        <div class="">
+                            <p class="font-medium text-gray-700">{{ car.licensePlate }}</p>
+                            <p class="font-medium text-lg text-gray-500">{{ car.dateTimeOut }}</p>
+                        </div>
                     </div>
                 </template>
 
@@ -52,22 +58,25 @@
 
         <!-- คอลัมน์ 3: กลับเข้าโรงงาน -->
         <div
-            class="min-w-72 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-hide">
+            class="min-w-82 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-hide">
             <div class="flex justify-between items-center sticky top-0 bg-gray-100 z-10 px-4 pt-6 pb-2">
-                <h2 class="text-lg font-bold text-gray-700">กลับเข้าโรงงาน</h2>
+                <h2 class="text-2xl font-bold text-gray-700">กลับเข้าโรงงาน</h2>
 
             </div>
 
             <draggable v-model="incomingCars" item-key="id"
                 :group="{ name: 'incomingCars', pull: false, put: ['outgoingCars'] }"
-                class="min-h-[4rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
+                class="min-h-[5rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
                 :animation="200" :delay="200" :delay-on-touch-only="true" @add="handleAdd($event, 'incomingCars')">
                 <!-- Items -->
                 <template #item="{ element: car }">
                     <div
-                        class="text-lg flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
-                        <i class="fa-solid fa-grip-vertical"></i>
-                        <p class="font-medium text-gray-700">{{ car.licensePlate }}</p>
+                        class="text-2xl flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
+                        <i class="fa-solid fa-grip-vertical text-gray-500"></i>
+                        <div class="">
+                            <p class="font-medium text-gray-700">{{ car.licensePlate }}</p>
+                            <p class="font-medium text-lg text-gray-500">{{ car.dateTimeOut }}</p>
+                        </div>
                     </div>
                 </template>
             </draggable>
@@ -81,7 +90,7 @@
         <div class="bg-white rounded-xl shadow-lg p-6 w-lg relative z-50">
             <h2 class="text-2xl font-semibold mb-4 text-gray-700">บันทึกข้อมูล</h2>
 
-            <p class="text-lg text-gray-600 mb-2">
+            <p class="text-xl text-gray-700 mb-2">
                 หมายเลขทะเบียนรถ : <span class="font-medium">{{ tempCar.licensePlate }}</span>
             </p>
 
@@ -89,15 +98,16 @@
                 <!-- <span class="text-lg text-gray-700">กรอกเลขไมล์</span> -->
                 <input v-model="form.remark" ref="inputRemark" type="text" inputmode="numeric" pattern="[0-9]*"
                     @input="form.remark = form.remark.replace(/[^0-9]/g, '')" placeholder="กรอกเลขไมล์..."
-                    class="w-full mt-2 pl-3 pr-6 py-2 text-base bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-3 focus:ring-gray-500/20 focus:border-gray-500 transition-all duration-300 hover:border-gray-300 placeholder-gray-400" />
+                    class=" w-full mt-2 pl-3 pr-6 py-2 text-xl bg-white border border-gray-200 rounded-xl focus:outline-none focus:ring-3 focus:ring-gray-500/20 focus:border-gray-500 transition-all duration-300 hover:border-gray-300 placeholder-gray-400" />
             </label>
 
-            <div class="flex justify-end space-x-3 mt-5">
+            <div class="text-xl flex justify-end space-x-3 mt-5">
                 <button @click="cancelMove"
-                    class="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100">
+                    class="cursor-pointer px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100">
                     ยกเลิก
                 </button>
-                <button @click="confirmMove" class="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">
+                <button @click="confirmMove"
+                    class="cursor-pointer px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700">
                     ยืนยัน
                 </button>
             </div>
@@ -130,15 +140,16 @@ export default {
             tempCar: null,
             targetList: '',
             form: {
-                remark: ''
+                remark: '',
+                dateTime: '',
             },
         }
     },
     computed: {
         containerClass() {
             return this.isPortrait
-                ? 'flex space-x-6 overflow-x-auto py-8'
-                : 'grid grid-cols-3 gap-6 py-8'
+                ? 'flex space-x-6 overflow-x-auto py-12'
+                : 'grid grid-cols-3 gap-6 py-12'
         },
     },
     mounted() {
@@ -151,7 +162,7 @@ export default {
         this.timeout = setInterval(() => {
             this.getlistCar();
             this.updateCar();
-        }, (1000 * 60 * 3));
+        }, (1000 * 60));
     },
     beforeUnmount() {
         window.removeEventListener('resize', this.checkOrientation)
@@ -172,7 +183,7 @@ export default {
                 );
                 const data = response.data;
                 const newData = data.rows || [];
-                console.log("list car :", data.rows)
+                // console.log("list car :", data.rows)
 
                 // เช็ค localStorge vehicleGatePassMain ว่ามีไหม
                 const storedMain = JSON.parse(localStorage.getItem("vehicleGatePassMain"));
@@ -198,9 +209,9 @@ export default {
             this.authorizedCars = JSON.parse(localStorage.getItem("vehicleGatePassMain")) || [];
             this.outgoingCars = JSON.parse(localStorage.getItem("vehicleGatePassOut")) || [];
             this.incomingCars = JSON.parse(localStorage.getItem("vehicleGatePassIn")) || [];
-            console.log("vehicleGatePassMain :", JSON.parse(localStorage.getItem("vehicleGatePassMain")))
-            console.log("vehicleGatePassOut :", JSON.parse(localStorage.getItem("vehicleGatePassOut")))
-            console.log("vehicleGatePassIn :", JSON.parse(localStorage.getItem("vehicleGatePassIn")))
+            // console.log("vehicleGatePassMain :", JSON.parse(localStorage.getItem("vehicleGatePassMain")))
+            // console.log("vehicleGatePassOut :", JSON.parse(localStorage.getItem("vehicleGatePassOut")))
+            // console.log("vehicleGatePassIn :", JSON.parse(localStorage.getItem("vehicleGatePassIn")))
 
 
         },
@@ -215,6 +226,8 @@ export default {
             this.tempCar = movedItem
             this.targetList = target
             this.showModal = true
+
+            console.log("newIndex :", event.newIndex)
         },
 
         async confirmMove() {
@@ -223,6 +236,7 @@ export default {
                 return
             }
             try {
+                this.form.dateTime = this.getNow();
                 const payload = {
                     action: "saveDoc",
                     docID: this.tempCar.id,
@@ -231,10 +245,10 @@ export default {
 
                 if (this.targetList === "incomingCars") {
                     payload.mileInNumber = this.form.remark;
-                    payload.dateTimeIn = this.getNow();
+                    payload.dateTimeIn = this.form.dateTime
                 } else if (this.targetList === "outgoingCars") {
                     payload.mileOutNumber = this.form.remark;
-                    payload.dateTimeOut = this.getNow();
+                    payload.dateTimeOut = this.form.dateTime
                 }
 
                 console.log("payload :", payload)
@@ -254,13 +268,15 @@ export default {
                                 const storedMain = JSON.parse(localStorage.getItem("vehicleGatePassMain")) || [];
 
                                 // เพิ่มรถเข้า vehicleGatePassOut
-                                const updatedOut = [...storedOut, this.tempCar];
+                                const updateVehicle = { ...this.tempCar, updated: false, dateTimeOut: this.form.dateTime };
+                                const updatedOut = [...storedOut, updateVehicle];
                                 localStorage.setItem("vehicleGatePassOut", JSON.stringify(updatedOut));
 
                                 // ลบรถคันนี้ออกจาก vehicleGatePassMain
                                 const filteredMain = storedMain.filter(item => item.id !== this.tempCar.id);
                                 localStorage.setItem("vehicleGatePassMain", JSON.stringify(filteredMain));
 
+                                console.log("confirm Out :", JSON.parse(localStorage.getItem("vehicleGatePassOut")))
 
                             } else if (this.targetList === "incomingCars") {
                                 // ดึงข้อมูลเก่า
@@ -268,12 +284,15 @@ export default {
                                 const storedOut = JSON.parse(localStorage.getItem("vehicleGatePassOut")) || [];
 
                                 // เพิ่มรถเข้า vehicleGatePassIn 
-                                const updatedIn = [...storedIn, this.tempCar];
+                                const updateVehicle = { ...this.tempCar, updated: false, dateTimeIn: this.form.dateTime };
+                                const updatedIn = [...storedIn, updateVehicle];
                                 localStorage.setItem("vehicleGatePassIn", JSON.stringify(updatedIn));
 
                                 // ลบรถคันนี้ออกจาก vehicleGatePassOut
                                 const filteredOut = storedOut.filter(item => item.id !== this.tempCar.id);
                                 localStorage.setItem("vehicleGatePassOut", JSON.stringify(filteredOut));
+
+                                console.log("confirm In :", JSON.parse(localStorage.getItem("vehicleGatePassIn")))
                             }
 
                             this.reset();
@@ -329,7 +348,7 @@ export default {
         },
 
         async updateCar() {
-            console.log("updateCar")
+            // console.log("updateCar")
             try {
 
                 // id, licencePlate, mile ,dateTime, updated(,true,false)
@@ -338,41 +357,58 @@ export default {
 
                 // ส่ง outgoingCars 
                 for (const car of storedOut) {
-                    const payloadOut = {
-                        action: "saveDoc",
-                        docID: car.id,
-                        licensePlate: car.licensePlate,
-                        mileOutNumber: car.mileOutNumber || null,
-                        dateTimeOut: this.getNow(),
+                    if (car.updated === true) {
+                        // console.log("car updated: ", car.licensePlate, " = ", car.updated);
+                        continue;
+                    } else {
+                        console.log("ยิง api")
+                        const payloadOut = {
+                            action: "saveDoc",
+                            docID: car.id,
+                            licensePlate: car.licensePlate,
+                            mileOutNumber: car.mileOutNumber || null,
+                            dateTimeOut: car.dateTimeOut,
 
-                    };
-                    console.log("payloadOut :", payloadOut)
-                    const responseOut = await axios.post(this.apiUrl + 'hr/vehicleGatePass', payloadOut);
-                    if (responseOut.data.success !== true) {
-                        console.error("เกิดข้อผิดพลาดกับ outgoingCar:", car, responseOut);
+                        };
+                        // console.log("payloadOut :", payloadOut)
+                        const responseOut = await axios.post(this.apiUrl + 'hr/vehicleGatePass', payloadOut);
+                        if (responseOut.data.success === true) {
+                            car.updated = true;
+                            localStorage.setItem("vehicleGatePassOut", JSON.stringify(storedOut));
+                            console.log("อัปเดตสำเร็จ update storedOut:", storedOut)
+                        } else {
+                            console.error("เกิดข้อผิดพลาดกับ outgoingCar:", car, responseOut);
+                        }
                     }
-                    // else{
-                    //     localStorage.getItem("vehicleGatePassOut")[0]['updated'] = true;
-                    // }
-                }
 
+                }
                 // ส่ง incomingCars 
                 for (const car of storedIn) {
-                    const payloadIn = {
-                        action: "saveDoc",
-                        docID: car.id,
-                        licensePlate: car.licensePlate,
-                        mileInNumber: car.mileInNumber || null,
-                        dateTimeIn: this.getNow(),
-                    };
-                    console.log("payloadIn :", payloadIn)
-                    const responseIn = await axios.post(this.apiUrl + 'hr/vehicleGatePass', payloadIn);
-                    if (responseIn.data.success !== true) {
-                        console.error("เกิดข้อผิดพลาดกับ incomingCar:", car, responseIn);
+                    if (car.updated === true) {
+                        // console.log("car updated: ", car.licensePlate, " = ", car.updated);
+                        continue;
+                    } else {
+                        console.log("ยิง api")
+                        const payloadIn = {
+                            action: "saveDoc",
+                            docID: car.id,
+                            licensePlate: car.licensePlate,
+                            mileInNumber: car.mileInNumber || null,
+                            dateTimeIn: car.dateTimeIn,
+                        };
+                        // console.log("payloadIn :", payloadIn)
+                        const responseIn = await axios.post(this.apiUrl + 'hr/vehicleGatePass', payloadIn);
+                        if (responseIn.data.success === true) {
+                            car.updated = true;
+                            localStorage.setItem("vehicleGatePassIn", JSON.stringify(storedIn));
+                            console.log("อัปเดตสำเร็จ update storedIn:", storedIn)
+                        } else {
+                            console.error("เกิดข้อผิดพลาดกับ incomingCar:", car, responseIn);
+                        }
                     }
+
                 }
 
-                console.log("อัปเดทข้อมูลสำเร็จทั้งหมด");
 
             } catch (error) {
                 console.error("เกิดข้อผิดพลาดในการบันทึก:", error);
