@@ -1,19 +1,21 @@
 <template>
     <nav class="bg-white shadow-md border-b border-gray-300">
-        <div class="lg:max-w-6xl mx-auto px-8 relative">
-            <div class="flex justify-between items-center h-18 relative">
+        <div class="lg:max-w-6xl mx-auto lg:px-8 px-4">
+            <div class="flex justify-center items-center h-16 gap-3">
 
-                <div class="flex items-center absolute left-0">
+                <!-- โลโก้ -->
+                <div class="flex items-center">
                     <a href="#" class="font-bold text-xl text-gray-800">
-                        <img class="w-auto h-12 object-cover" :src="`${imageIcon}asiaGray.png`" alt="Logo" />
+                        <img class="lg:h-12 md:h-12 h-10 w-auto object-contain" :src="`${imageIcon}icon.png`" alt="Logo" />
                     </a>
                 </div>
-
-                <div class="absolute left-1/2 transform -translate-x-1/2 font-bold text-2xl text-gray-800">
-                    รายการรถขอออกจากโรงงาน
+                <div class="flex items-center pointer-events-none">
+                    <h1 class="font-bold text-2xl text-gray-800">รายการรถขอออกจากโรงงาน</h1>
                 </div>
+
             </div>
         </div>
+
 
     </nav>
 </template>

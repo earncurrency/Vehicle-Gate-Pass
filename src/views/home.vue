@@ -1,85 +1,99 @@
 <template>
     <navbar />
-    <div class="lg:max-w-6xl mx-auto p-8" :class="containerClass">
 
+    <div
+        class="lg:max-w-6xl flex justify-between lg:justify-center gap-3 mx-auto px-4 overflow-x-auto lg:overflow-x-visible py-4">
         <!-- คอลัมน์ 1: รถที่ได้รับอนุญาต -->
         <div
-            class="min-w-82 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-hide">
+            class="lg:min-w-82 min-w-74 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-hide">
             <div class="flex justify-between items-center sticky top-0 bg-gray-100 z-10 px-4 pt-6 pb-2">
-                <h2 class="text-2xl font-bold text-gray-700">รถที่ได้รับอนุญาต</h2>
+                <h2 class="text-2xl font-bold text-gray-800">รถที่ได้รับอนุญาต</h2>
+            </div>
+            <div
+                class="border-2 border-dashed border-gray-300 rounded-md m-3 h-fit max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide">
+                <draggable v-model="authorizedCars" item-key="id"
+                    :group="{ name: 'authorizedCars', pull: true, put: false }" class="min-h-[6rem] py-2 px-1 space-y-3"
+                    :animation="200" :delay="200" :delay-on-touch-only="true"
+                    @add="handleAdd($event, 'authorizedCars')">
+                    <!-- Items -->
+                    <template #item="{ element: car }">
+                        <div
+                            class="flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
+                            <div class="bg-blue-100 p-2 py-2.5 rounded-md flex items-center justify-center">
+                                <i class="fa-solid fa-grip-vertical text-xl text-blue-500"></i>
+                            </div>
+
+                            <div class="">
+                                <p class="font-medium text-xl text-gray-800">{{ car.licensePlate }}</p>
+                            </div>
+                        </div>
+                    </template>
+                </draggable>
             </div>
 
-            <draggable v-model="authorizedCars" item-key="id"
-                :group="{ name: 'authorizedCars', pull: true, put: false }"
-                class="min-h-[5rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
-                :animation="200" :delay="200" :delay-on-touch-only="true" @add="handleAdd($event, 'authorizedCars')">
-                <!-- Items -->
-                <template #item="{ element: car }">
-                    <div
-                        class="text-2xl flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
-                        <i class="fa-solid fa-grip-vertical text-gray-500"></i>
-                        <div class="">
-                            <p class="font-medium text-gray-700">{{ car.licensePlate }}</p>
-                            <!-- <p class="font-medium text-lg text-gray-500">{{ car.dateTimeOut }}</p> -->
-                        </div>
-                    </div>
-                </template>
-            </draggable>
         </div>
-
 
         <!-- คอลัมน์ 2: ออกจากโรงงาน -->
         <div
-            class="min-w-82 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-hide">
+            class="lg:min-w-82 min-w-74 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-hide">
             <!-- Header -->
             <div class="flex justify-between items-center sticky top-0 bg-gray-100 z-10 px-4 pt-6 pb-2">
-                <h2 class="text-2xl font-bold text-gray-700">ออกจากโรงงาน</h2>
+                <h2 class="text-2xl font-bold text-gray-800">ออกจากโรงงาน</h2>
             </div>
 
             <!-- Drag & Drop area -->
-            <draggable v-model="outgoingCars" item-key="id"
-                :group="{ name: 'outgoingCars', pull: true, put: ['authorizedCars'] }"
-                class="min-h-[5rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
-                :animation="200" :delay="200" :delay-on-touch-only="true" @add="handleAdd($event, 'outgoingCars')">
-                <!-- Items -->
-                <template #item="{ element: car }">
-                    <div
-                        class="text-2xl flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
-                        <i class="fa-solid fa-grip-vertical text-gray-500"></i>
-                        <div class="">
-                            <p class="font-medium text-gray-700">{{ car.licensePlate }}</p>
-                            <p class="font-medium text-lg text-gray-500">{{ car.dateTimeOut }}</p>
+            <div
+                class="border-2 border-dashed border-gray-300 rounded-md m-3 h-fit max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide">
+                <draggable v-model="outgoingCars" item-key="id"
+                    :group="{ name: 'outgoingCars', pull: true, put: ['authorizedCars'] }"
+                    class="min-h-[6rem] py-2 px-1 space-y-3" :animation="200" :delay="200" :delay-on-touch-only="true"
+                    @add="handleAdd($event, 'outgoingCars')">
+                    <!-- Items -->
+                    <template #item="{ element: car }">
+                        <div
+                            class="flex items-center gap-3 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
+                            <div class="bg-blue-100 p-2 py-2.5 rounded-md flex items-center justify-center">
+                                <i class="fa-solid fa-grip-vertical text-xl text-blue-500"></i>
+                            </div>
+                            <div class="">
+                                <p class="font-medium text-xl text-gray-800">{{ car.licensePlate }}</p>
+                                <p class="font-medium text-base text-gray-500">{{ car.dateTimeOut }}</p>
+                            </div>
                         </div>
-                    </div>
-                </template>
+                    </template>
 
-            </draggable>
+                </draggable>
+            </div>
         </div>
 
         <!-- คอลัมน์ 3: กลับเข้าโรงงาน -->
         <div
-            class="min-w-82 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-7rem)] overflow-y-auto scrollbar-hide">
+            class="lg:min-w-82 min-w-74 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-hide">
             <div class="flex justify-between items-center sticky top-0 bg-gray-100 z-10 px-4 pt-6 pb-2">
-                <h2 class="text-2xl font-bold text-gray-700">กลับเข้าโรงงาน</h2>
+                <h2 class="text-2xl font-bold text-gray-800">กลับเข้าโรงงาน</h2>
 
             </div>
-
-            <draggable v-model="incomingCars" item-key="id"
-                :group="{ name: 'incomingCars', pull: false, put: ['outgoingCars'] }"
-                class="min-h-[5rem] p-3 m-3 border-2 border-dashed border-gray-300 rounded-md space-y-3"
-                :animation="200" :delay="200" :delay-on-touch-only="true" @add="handleAdd($event, 'incomingCars')">
-                <!-- Items -->
-                <template #item="{ element: car }">
-                    <div
-                        class="text-2xl flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
-                        <i class="fa-solid fa-grip-vertical text-gray-500"></i>
-                        <div class="">
-                            <p class="font-medium text-gray-700">{{ car.licensePlate }}</p>
-                            <p class="font-medium text-lg text-gray-500">{{ car.dateTimeOut }}</p>
+            <div
+                class="border-2 border-dashed border-gray-300 rounded-md m-3 h-fit max-h-[calc(100vh-12rem)] overflow-y-auto scrollbar-hide">
+                <draggable v-model="incomingCars" item-key="id"
+                    :group="{ name: 'incomingCars', pull: false, put: ['outgoingCars'] }"
+                    class="min-h-[6rem] py-2 px-1 space-y-3" :animation="200" :delay="200" :delay-on-touch-only="true"
+                    @add="handleAdd($event, 'incomingCars')">
+                    <!-- Items -->
+                    <template #item="{ element: car }">
+                        <div
+                            class="flex items-center gap-3 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
+                            <div class="bg-blue-100 p-2 py-2.5 rounded-md flex items-center justify-center">
+                                <i class="fa-solid fa-grip-vertical text-xl text-blue-500"></i>
+                            </div>
+                            <div class="">
+                                <p class="font-medium text-xl text-gray-800">{{ car.licensePlate }}</p>
+                                <p class="font-medium text-base text-gray-500">{{ car.dateTimeIn }}</p>
+                            </div>
                         </div>
-                    </div>
-                </template>
-            </draggable>
+                    </template>
+                </draggable>
+            </div>
         </div>
 
     </div>
@@ -146,22 +160,19 @@ export default {
         }
     },
     computed: {
-        containerClass() {
-            return this.isPortrait
-                ? 'flex space-x-6 overflow-x-auto py-12'
-                : 'grid grid-cols-3 gap-6 py-12'
-        },
+
     },
     mounted() {
-        this.getlistCar()
+        this.getlistCar();
         this.updateCar();
-        this.checkOrientation()
+        this.cleanOldVehicleIn();
         window.addEventListener('resize', this.checkOrientation)
         window.addEventListener('orientationchange', this.checkOrientation)
 
         this.timeout = setInterval(() => {
             this.getlistCar();
             this.updateCar();
+            this.cleanOldVehicleIn();
         }, (1000 * 60));
     },
     beforeUnmount() {
@@ -171,9 +182,6 @@ export default {
         clearInterval(this.timeout);
     },
     methods: {
-        checkOrientation() {
-            this.isPortrait = window.innerHeight > window.innerWidth
-        },
 
         async getlistCar() {
             // localStorage.clear();
@@ -324,15 +332,6 @@ export default {
             }
         },
         cancelMove() {
-            // ยกเลิก: ย้ายกลับไป 
-            // if (this.tempCar && this.targetList) {
-            //     const list = this[this.targetList]
-            //     const index = list.findIndex(c => c.id === this.tempCar.id)
-            //     if (index !== -1) {
-            //         list.splice(index, 1)
-            //         this.authorizedCars.push(this.tempCar)
-            //     }
-            // }
             this.getlistCar()
             this.showModal = false
             this.tempCar = null
@@ -361,7 +360,7 @@ export default {
                         // console.log("car updated: ", car.licensePlate, " = ", car.updated);
                         continue;
                     } else {
-                        console.log("ยิง api")
+                        // console.log("ยิง api")
                         const payloadOut = {
                             action: "saveDoc",
                             docID: car.id,
@@ -375,7 +374,7 @@ export default {
                         if (responseOut.data.success === true) {
                             car.updated = true;
                             localStorage.setItem("vehicleGatePassOut", JSON.stringify(storedOut));
-                            console.log("อัปเดตสำเร็จ update storedOut:", storedOut)
+                            // console.log("อัปเดตสำเร็จ update storedOut:", storedOut)
                         } else {
                             console.error("เกิดข้อผิดพลาดกับ outgoingCar:", car, responseOut);
                         }
@@ -388,7 +387,7 @@ export default {
                         // console.log("car updated: ", car.licensePlate, " = ", car.updated);
                         continue;
                     } else {
-                        console.log("ยิง api")
+                        // console.log("ยิง api")
                         const payloadIn = {
                             action: "saveDoc",
                             docID: car.id,
@@ -401,7 +400,7 @@ export default {
                         if (responseIn.data.success === true) {
                             car.updated = true;
                             localStorage.setItem("vehicleGatePassIn", JSON.stringify(storedIn));
-                            console.log("อัปเดตสำเร็จ update storedIn:", storedIn)
+                            // console.log("อัปเดตสำเร็จ update storedIn:", storedIn)
                         } else {
                             console.error("เกิดข้อผิดพลาดกับ incomingCar:", car, responseIn);
                         }
@@ -409,11 +408,11 @@ export default {
 
                 }
 
-
             } catch (error) {
                 console.error("เกิดข้อผิดพลาดในการบันทึก:", error);
             }
         },
+
         getNow() {
             const now = new Date();
             const year = now.getFullYear();
@@ -424,6 +423,38 @@ export default {
             const seconds = String(now.getSeconds()).padStart(2, '0');
             return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
         },
+
+        cleanOldVehicleIn() {
+            // console.log("เช็คข้อมูลรถเข้าที่เกิน 1 ชม.")
+            const data = localStorage.getItem("vehicleGatePassIn");
+            if (!data) return;
+
+            let vehicles = JSON.parse(data);
+            const now = new Date();
+            const newVehicles = [];
+
+            for (const car of vehicles) {
+                if (!car.dateTimeIn) {
+                    newVehicles.push(car);
+                    continue;
+                }
+
+                // แปลงเป็นรูปแบบที่ Date อ่านได้
+                const fixedDate = car.dateTimeIn.replace(" ", "T");
+                const timeIn = new Date(fixedDate);
+
+                // คำนวณชั่วโมงที่ผ่านไป
+                const hours = (now - timeIn) / (1000 * 60 * 60);
+
+                //  ถ้ายังไม่เกิน 1 ชั่วโมง ให้เก็บไว้
+                if (hours < 1) {
+                    newVehicles.push(car);
+                }
+            }
+
+            localStorage.setItem("vehicleGatePassIn", JSON.stringify(newVehicles));
+            
+        }
 
 
 
