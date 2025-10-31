@@ -11,7 +11,7 @@
     "scope": "/vehicleGatePass/",
     "icons": [
         {
-            "src": "icon.png",
+            "src": "vgp.png",
             "sizes": "512x512",
             "type": "image/png"
         }
