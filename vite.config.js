@@ -12,7 +12,7 @@ export default defineConfig({
     vueDevTools(),
     tailwindcss(),
   ],
-  base: process.env.NODE_ENV === 'production' ? '/Vehicle-Gate-Pass/' : '',
+  base: process.env.NODE_ENV === 'production' ? '/vehicleGatePass/' : '',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -29,7 +29,7 @@ export default defineConfig({
 
     __IMG_ICON__: JSON.stringify(
       process.env.NODE_ENV === 'production'
-        ? '/Vehicle-Gate-Pass/'
+        ? '/vehicleGatePass/'
         : '/'
     ),
 
