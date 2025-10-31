@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen transition-all duration-500 ">
+  <div class=" transition-all duration-500 ">
     <router-view />
   </div>
 </template>

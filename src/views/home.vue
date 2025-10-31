@@ -2,7 +2,7 @@
     <navbar />
 
     <div
-        class="lg:max-w-6xl flex justify-between lg:justify-center gap-3 mx-auto px-4 overflow-x-auto lg:overflow-x-visible py-4">
+        class="lg:max-w-6xl h-screen flex justify-between lg:justify-center gap-3 mx-auto px-4 overflow-x-auto lg:overflow-x-visible py-4">
         <!-- คอลัมน์ 1: รถที่ได้รับอนุญาต -->
         <div
             class="lg:min-w-82 min-w-74 w-auto flex-shrink-0 bg-gray-100 rounded-lg shadow-md h-fit max-h-[calc(100vh-6rem)] overflow-y-auto scrollbar-hide">
