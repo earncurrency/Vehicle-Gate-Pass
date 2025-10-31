@@ -14,11 +14,13 @@
                 <draggable v-model="authorizedCars" item-key="id"
                     :group="{ name: 'authorizedCars', pull: true, put: false }" class="min-h-[6rem] py-2 px-1 space-y-3"
                     :animation="200" :delay="200" :delay-on-touch-only="true"
-                    @add="handleAdd($event, 'authorizedCars')">
+                    @add="handleAdd($event, 'authorizedCars')"
+                    @start="onDragStart"
+                    @end="onDragEnd">
                     <!-- Items -->
                     <template #item="{ element: car }">
                         <div
-                            class="flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
+                            class="car-item flex items-center gap-4 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3 transition-all duration-200">
                             <div class="bg-blue-100 p-2 py-2.5 rounded-md flex items-center justify-center">
                                 <i class="fa-solid fa-grip-vertical text-xl text-blue-500"></i>
                             </div>
@@ -47,11 +49,13 @@
                 <draggable v-model="outgoingCars" item-key="id"
                     :group="{ name: 'outgoingCars', pull: true, put: ['authorizedCars'] }"
                     class="min-h-[6rem] py-2 px-1 space-y-3" :animation="200" :delay="200" :delay-on-touch-only="true"
-                    @add="handleAdd($event, 'outgoingCars')">
+                    @add="handleAdd($event, 'outgoingCars')"
+                    @start="onDragStart"
+                    @end="onDragEnd">
                     <!-- Items -->
                     <template #item="{ element: car }">
                         <div
-                            class="flex items-center gap-3 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
+                            class="car-item flex items-center gap-3 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3 transition-all duration-200">
                             <div class="bg-blue-100 p-2 py-2.5 rounded-md flex items-center justify-center">
                                 <i class="fa-solid fa-grip-vertical text-xl text-blue-500"></i>
                             </div>
@@ -78,11 +82,13 @@
                 <draggable v-model="incomingCars" item-key="id"
                     :group="{ name: 'incomingCars', pull: false, put: ['outgoingCars'] }"
                     class="min-h-[6rem] py-2 px-1 space-y-3" :animation="200" :delay="200" :delay-on-touch-only="true"
-                    @add="handleAdd($event, 'incomingCars')">
+                    @add="handleAdd($event, 'incomingCars')"
+                    @start="onDragStart"
+                    @end="onDragEnd">
                     <!-- Items -->
                     <template #item="{ element: car }">
                         <div
-                            class="flex items-center gap-3 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3">
+                            class="car-item flex items-center gap-3 bg-white rounded-md shadow-sm hover:bg-gray-50 cursor-grab active:cursor-grabbing p-3 transition-all duration-200">
                             <div class="bg-blue-100 p-2 py-2.5 rounded-md flex items-center justify-center">
                                 <i class="fa-solid fa-grip-vertical text-xl text-blue-500"></i>
                             </div>
@@ -182,6 +188,16 @@ export default {
         clearInterval(this.timeout);
     },
     methods: {
+
+        onDragStart(event) {
+            // เพิ่ม class สำหรับ animation
+            event.item.classList.add('dragging');
+        },
+
+        onDragEnd(event) {
+            // ลบ class เมื่อเลิกลาก
+            event.item.classList.remove('dragging');
+        },
 
         async getlistCar() {
             // localStorage.clear();
@@ -461,3 +477,45 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+/* Animation สำหรับตอนกดค้าง (delay period) */
+.car-item:active {
+  transform: scale(1.02);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Animation สำหรับตอนลาก */
+.car-item.dragging {
+  transform: scale(1.05) rotate(2deg);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  opacity: 0.95;
+}
+
+/* Animation สำหรับ ghost element (ตัวที่ถูกลาก) */
+:deep(.sortable-ghost) {
+  opacity: 0.4;
+  background: #e0f2fe !important;
+  transform: scale(0.98);
+}
+
+/* Animation สำหรับ chosen element (ตัวที่กำลังจะลาก) */
+:deep(.sortable-chosen) {
+  transform: scale(1.02);
+}
+
+/* Hide scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth transition สำหรับทุก state */
+.car-item {
+  will-change: transform, box-shadow;
+}
+</style>
