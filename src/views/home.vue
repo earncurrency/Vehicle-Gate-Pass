@@ -200,10 +200,11 @@ export default {
         },
 
         async getlistCar() {
+            console.log('getlistCar...');
             // localStorage.clear();
             try {
                 const response = await axios.get(
-                    `${this.apiUrl}hr/vehicleGatePass/?action=listDoc&tripStatus=ready`
+                  `${this.apiUrl}hr/vehicleGatePass/?action=listDoc&tripStatus=ready`
                 );
                 const data = response.data;
                 const newData = data.rows || [];
@@ -212,7 +213,7 @@ export default {
                 // เช็ค localStorge vehicleGatePassMain ว่ามีไหม
                 const storedMain = JSON.parse(localStorage.getItem("vehicleGatePassMain"));
                 if (!storedMain || storedMain.length === 0) {
-                    // ไม่มีข้อมูลใน localStorage 
+                    // ไม่มีข้อมูลใน localStorage
                     localStorage.setItem("vehicleGatePassMain", JSON.stringify(data.rows));
                 } else {
 
@@ -292,7 +293,7 @@ export default {
                                 const storedMain = JSON.parse(localStorage.getItem("vehicleGatePassMain")) || [];
 
                                 // เพิ่มรถเข้า vehicleGatePassOut
-                                const updateVehicle = { ...this.tempCar, updated: false, dateTimeOut: this.form.dateTime };
+                                const updateVehicle = { ...this.tempCar, updated: false, dateTimeOut: this.form.dateTime, mileOutNumber: this.form.remark };
                                 const updatedOut = [...storedOut, updateVehicle];
                                 localStorage.setItem("vehicleGatePassOut", JSON.stringify(updatedOut));
 
@@ -307,8 +308,8 @@ export default {
                                 const storedIn = JSON.parse(localStorage.getItem("vehicleGatePassIn")) || [];
                                 const storedOut = JSON.parse(localStorage.getItem("vehicleGatePassOut")) || [];
 
-                                // เพิ่มรถเข้า vehicleGatePassIn 
-                                const updateVehicle = { ...this.tempCar, updated: false, dateTimeIn: this.form.dateTime };
+                                // เพิ่มรถเข้า vehicleGatePassIn
+                                const updateVehicle = { ...this.tempCar, updated: false, dateTimeIn: this.form.dateTime, mileInNumber: this.form.remark };
                                 const updatedIn = [...storedIn, updateVehicle];
                                 localStorage.setItem("vehicleGatePassIn", JSON.stringify(updatedIn));
 
@@ -370,7 +371,7 @@ export default {
                 const storedOut = JSON.parse(localStorage.getItem("vehicleGatePassOut")) || [];
                 const storedIn = JSON.parse(localStorage.getItem("vehicleGatePassIn")) || [];
 
-                // ส่ง outgoingCars 
+                // ส่ง outgoingCars
                 for (const car of storedOut) {
                     if (car.updated === true) {
                         // console.log("car updated: ", car.licensePlate, " = ", car.updated);
@@ -397,7 +398,7 @@ export default {
                     }
 
                 }
-                // ส่ง incomingCars 
+                // ส่ง incomingCars
                 for (const car of storedIn) {
                     if (car.updated === true) {
                         // console.log("car updated: ", car.licensePlate, " = ", car.updated);
@@ -469,7 +470,7 @@ export default {
             }
 
             localStorage.setItem("vehicleGatePassIn", JSON.stringify(newVehicles));
-            
+
         }
 
 
